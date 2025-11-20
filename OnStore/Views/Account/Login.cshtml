@@ -1,0 +1,87 @@
+﻿@model OnStore.Models.LoginView
+    @{
+        ViewBag.Title = "Login";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <style>
+        .form-box {
+            width: 600px;
+            height: 600px;
+            margin: 20px auto;
+            padding: 20px 50px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background: #f8f8f8;
+            font-family: sans-serif;
+        }
+
+            .form-box h2 {
+                text-align: center;
+                margin-bottom: 20px;
+                font-size: 30px;
+            }
+
+            .form-box label {
+                display: block;
+                margin: 10px 0;
+                font-weight: bold;
+                font-size: 25px;
+            }
+
+            .form-box input {
+                width: 100%;
+                padding: 8px;
+                margin: 10px 0;
+                border: 1px solid #bbb;
+                border-radius: 10px;
+                font-size: 22px;
+            }
+
+            .form-box button {
+                width: 100%;
+                margin-top: 15px;
+                padding: 15px;
+                background-color: black;
+                color: white;
+                border: none;
+                font-size: 18px;
+                border-radius: 10px;
+                cursor: pointer;
+            }
+
+                .form-box button:hover {
+                    background-color: red;
+                }
+
+            .form-box p {
+                margin: 20px 0;
+                text-align: center;
+                padding: 10px;
+            }
+
+            .form-box a {
+                text-decoration: none;
+                color: red;
+            }
+    </style>
+
+    <div class="form-box">
+        <h2>Đăng nhập</h2>
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <label>Thông tin đăng nhập</label>
+            @Html.TextBoxFor(m => m.Email, new { type = "email", placeholder = "Nhập email..." })
+            @Html.PasswordFor(m => m.Password, new { placeholder = "Nhập mật khẩu..." })
+
+            <button type="submit">Đăng nhập</button>
+        }
+
+        @if (ViewBag.Error != null)
+        {
+            <p style="color:red">@ViewBag.Error</p>
+        }
+
+        <p>Chưa có tài khoản? <a href="/Account/Register">Đăng ký ngay</a></p>
+    </div>

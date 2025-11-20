@@ -1,0 +1,60 @@
+﻿@model OnStore.Models.Product
+
+<div class="brand-product-card">
+    <!-- Badge nổi bật (nếu có) -->
+    @if (Model.IsFeatured)
+    {
+        <span class="featured-badge">
+            <i class="fa-solid fa-star"></i> Nổi bật
+        </span>
+    }
+
+    @if (Model.DiscountPercent > 0)
+    {
+        <span class="discount-badge">
+            -@Model.DiscountPercent%
+        </span>
+    }
+
+    <!-- Hình ảnh sản phẩm -->
+    <a href="@Url.Action("Details", "Product", new { id = Model.ProductId })">
+        <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://via.placeholder.com/250x250?text=No+Image" : Model.ImageUrl)"
+             alt="@Model.ProductName"
+             class="brand-product-image">
+    </a>
+
+    <!-- Thông tin sản phẩm -->
+    <div class="brand-product-info">
+        <h5 class="brand-product-name">
+            <a href="@Url.Action("Details", "Product", new { id = Model.ProductId })">
+                @Model.ProductName
+            </a>
+        </h5>
+
+        <!-- Giá -->
+        <div class="brand-product-price">
+            @if (Model.DiscountPercent > 0)
+            {
+                <span class="old-price">@Model.Price.ToString("N0") đ</span>
+                <span class="new-price">@((Model.Price * (1 - (decimal)Model.DiscountPercent / 100)).ToString("N0")) đ</span>            }
+            else
+            {
+                <span class="current-price">@Model.Price.ToString("N0") đ</span>
+            }
+        </div>
+
+        <!-- Số lượng đã bán (thay vì Rating) -->
+        @if (Model.SoldCount > 0)
+        {
+            <div class="brand-product-sold">
+                <i class="fa-solid fa-fire"></i> Đã bán: <strong>@Model.SoldCount</strong>
+            </div>
+        }
+
+        <!-- Nút thêm giỏ hàng -->
+        <button class="btn-add-cart-small"
+                onclick="addToCart(@Model.ProductId, '@Model.ProductName.Replace("'", "\\'").Replace("\"", "&quot;")', @Model.Price, '@Model.ImageUrl')">
+            <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ
+        </button>
+    </div>
+</div>

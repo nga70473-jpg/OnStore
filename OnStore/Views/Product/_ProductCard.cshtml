@@ -1,0 +1,42 @@
+﻿
+@model OnStore.Models.Product
+<div class="product-card">
+    @if (Model.DiscountPercent > 0)
+    {
+        <span class="discount-badge">-@Model.DiscountPercent%</span>
+    }
+    else if ((DateTime.Now - Model.CreatedAt).TotalDays <= 7)
+    {
+        <span class="new-badge"><i class="fa-solid fa-sparkles"></i> Mới</span>
+    }
+
+    <a href="@Url.Action("Details", "Product", new { id = Model.ProductId })">
+        <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "https://via.placeholder.com/300x300?text=No+Image" : Model.ImageUrl)"
+             alt="@Model.ProductName"
+             class="product-image">
+    </a>
+
+    <div class="product-info">
+        <h5 class="product-name">
+            <a href="@Url.Action("Details", "Product", new { id = Model.ProductId })">
+                @Model.ProductName
+            </a>
+        </h5>
+
+        @if (!string.IsNullOrEmpty(Model.Brand))
+        {
+            <p style="color: #666; font-size: 13px; margin-bottom: 8px;">
+                <i class="fa-solid fa-tag"></i> @Model.Brand
+            </p>
+        }
+
+        <div class="product-price">
+            @Model.Price.ToString("N0") đ
+        </div>
+
+        <button class="btn-add-cart"
+                onclick="addToCart(@Model.ProductId, '@Model.ProductName', @Model.Price, '@Model.ImageUrl')">
+            <i class="fa-solid fa-cart-shopping"></i> Thêm vào giỏ
+        </button>
+    </div>
+</div>
